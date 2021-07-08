@@ -52,10 +52,11 @@ _OBJ = derived_params.o field_funcs.o fields.o particles.o spectralfunctions.o \
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all : $(EXEC) 
-
+mkdir $(ODIR)
 $(ODIR)/%.o: ${SDIR}/%.cpp $(DEPS) 
 	$(CXX) -c -o $@ $< $(CF)
 
+mkdir $(BDIR)
 $(EXEC) : $(OBJ)
 	${CXX} -o ${BDIR}/$@ $^ $(CF) $(LIBS)
 
