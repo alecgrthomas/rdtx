@@ -12,7 +12,7 @@ ODIR = ${SDIR}/obj
 LDIR = lib
 IDIR = include
 BDIR = bin
-LIBS = 
+MKDIR = mkdir -p
 
 # CXX - C++ compiler command
 # CXXFLAGS - compilation flags
@@ -52,12 +52,12 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all : $(EXEC) 
 $(ODIR)/%.o: ${SDIR}/%.cpp $(DEPS)
-	mkdir $(ODIR)
+	$(MKDIR) $(ODIR)
 	$(CXX) -c -o $@ $< $(CF)
 
 
 $(EXEC) : $(OBJ)
-	mkdir $(BDIR)
+	$(MKDIR) $(BDIR)
 	${CXX} -o ${BDIR}/$@ $^ $(CF) $(LIBS)
 
 
