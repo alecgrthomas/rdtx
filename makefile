@@ -6,7 +6,6 @@
 #   - C++ compiler
 #
 ##################################################################################################
-NPROCS=1 # note not yet parallelized
 EXEC = rdtx_beta
 SDIR = src
 ODIR = ${SDIR}/obj
@@ -52,12 +51,13 @@ _OBJ = derived_params.o field_funcs.o fields.o particles.o spectralfunctions.o \
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all : $(EXEC) 
-mkdir $(ODIR)
-$(ODIR)/%.o: ${SDIR}/%.cpp $(DEPS) 
+$(ODIR)/%.o: ${SDIR}/%.cpp $(DEPS)
+	mkdir $(ODIR)
 	$(CXX) -c -o $@ $< $(CF)
 
-mkdir $(BDIR)
+
 $(EXEC) : $(OBJ)
+	mkdir $(BDIR)
 	${CXX} -o ${BDIR}/$@ $^ $(CF) $(LIBS)
 
 
@@ -65,12 +65,10 @@ $(EXEC) : $(OBJ)
 debug : ${OBJ}
 	${CXX} -o ${BDIR}/$@ $^ $(DF) $(LIBS)
 
-.PHONY: clean run
+.PHONY: clean 
 
 clean:
 	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
 	rm -rf $(EXEC).app
 
-run:
-	@echo Running on ${NPROCS} processors	
-	mpiexec -n ${NPROCS} ${BDIR}/${EXEC}
+
